@@ -8,6 +8,9 @@ uniform mat4 u_projection_matrix;
 uniform mat4 u_model_view_matrix;
 uniform mat4 u_joints[48];
 
+out vec3 f_postition;
+out vec3 f_normal;
+
 void main()
 {
     mat4 joint_transformation
@@ -15,6 +18,11 @@ void main()
     + v_joint_weights[1] * u_joints[int(v_joint_indices[1])]
     + v_joint_weights[2] * u_joints[int(v_joint_indices[2])]
     + v_joint_weights[3] * u_joints[int(v_joint_indices[3])];
+
+    f_postition = v_vertex;
+
+    vec3 v_normal = vec3(0.0, 1.0, 0.0);
+    f_normal = mat3(u_model_view_matrix) * v_normal;
 
     gl_Position = u_projection_matrix * u_model_view_matrix * joint_transformation * vec4(v_vertex, 1.0f);
 }
